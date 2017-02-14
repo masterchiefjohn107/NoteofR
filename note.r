@@ -75,3 +75,15 @@ p <- sapply(parse(text=paste(	"gregexpr('[0-9A-Z]+?:",
 								sep="")),
 			eval)
 			
+##用RODBC::sqlSave，将df写入数据库时，有一个奇怪的BUG
+#虽然tmp1、Tmp2、TMP5三张表都能建立，但是查询tmp1和Tmp2数据时，会提示ORA-00942：表或视图不存在的错误，TMP5则正常
+#虽然知道是大小写的原因
+require(RODBC)
+conn <- odbcConnect("test",uid="c##scott",pwd="tiger")
+tmp1 <- data.frame(a=c(1,2,3),b=c("a","b","c"))
+Tmp2 <- tmp1
+TMP5 <- tmp1
+sqlSave(conn,tmp1)
+sqlSave(conn,Tmp2)
+sqlSave(conn,TMP5)
+odbcClose(conn)
