@@ -87,3 +87,9 @@ sqlSave(conn,tmp1)
 sqlSave(conn,Tmp2)
 sqlSave(conn,TMP5)
 odbcClose(conn)
+
+##用RJDBC包连接数据库
+require(RJDBC)
+drv <- JDBC("oracle.jdbc.OracleDriver","D:/R/ojdbc6.jar",identifier.quote = "\"")
+conn <- dbConnect(drv,"jdbc:oracle:thin:@localhost:1521:orcl","c##scott","tiger")
+df <- dbGetQuery(conn,"select 1 as val from dual")
